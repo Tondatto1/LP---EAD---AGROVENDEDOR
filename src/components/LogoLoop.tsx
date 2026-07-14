@@ -51,16 +51,27 @@ const useResizeObserver = (
   dependencies: React.DependencyList
 ) => {
   useEffect(() => {
+    let timeoutId: any = null;
+
+    const debouncedCallback = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        callback();
+      }, 100);
+    };
+
     if (!window.ResizeObserver) {
-      const handleResize = () => callback();
-      window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', debouncedCallback);
       callback();
-      return () => window.removeEventListener('resize', handleResize);
+      return () => {
+        if (timeoutId) clearTimeout(timeoutId);
+        window.removeEventListener('resize', debouncedCallback);
+      };
     }
 
     const observers = elements.map(ref => {
       if (!ref.current) return null;
-      const observer = new ResizeObserver(callback);
+      const observer = new ResizeObserver(debouncedCallback);
       observer.observe(ref.current);
       return observer;
     });
@@ -68,6 +79,7 @@ const useResizeObserver = (
     callback();
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       observers.forEach(observer => observer?.disconnect());
     };
   }, dependencies);
@@ -241,15 +253,19 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             containerRef.current.style.height = `${targetHeight}px`;
         }
         if (sequenceHeight > 0) {
-          setSeqHeight(Math.ceil(sequenceHeight));
+          const roundedHeight = Math.ceil(sequenceHeight);
+          setSeqHeight(prev => (Math.abs(prev - roundedHeight) > 1 ? roundedHeight : prev));
           const viewport = containerRef.current?.clientHeight ?? parentHeight ?? sequenceHeight;
           const copiesNeeded = Math.ceil(viewport / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
-          setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
+          const targetCopies = Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded);
+          setCopyCount(prev => (prev !== targetCopies ? targetCopies : prev));
         }
       } else if (sequenceWidth > 0) {
-        setSeqWidth(Math.ceil(sequenceWidth));
+        const roundedWidth = Math.ceil(sequenceWidth);
+        setSeqWidth(prev => (Math.abs(prev - roundedWidth) > 1 ? roundedWidth : prev));
         const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
-        setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
+        const targetCopies = Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded);
+        setCopyCount(prev => (prev !== targetCopies ? targetCopies : prev));
       }
     }, [isVertical]);
 

@@ -44,6 +44,8 @@ body {
   padding: 3px; /* Beautiful visible border width */
   background: transparent;
   display: flex;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .perpetual-border-card::before {
@@ -61,8 +63,16 @@ body {
     #89dc5f 75%,
     #76c04e 100%
   );
-  animation: border-spin 10s linear infinite;
   z-index: 1;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Animate rotation only on desktop devices with hover support for extreme mobile performance optimization */
+@media (hover: hover) and (pointer: fine) {
+  .perpetual-border-card::before {
+    animation: border-spin 14s linear infinite;
+  }
 }
 
 .perpetual-border-card-inner {
@@ -74,6 +84,8 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* LogoLoop CSS */
