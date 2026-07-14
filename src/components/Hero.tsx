@@ -37,16 +37,6 @@ export default function Hero({ onSubscribe }: HeroProps) {
           
           {/* Text Left side (Dobra 1 Content) */}
           <div className="lg:col-span-5 flex flex-col items-start">
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-agro-blue/5 border border-agro-blue/10 text-agro-blue font-sans text-xs font-semibold uppercase tracking-wider mb-6"
-            >
-              <span className="flex h-2 w-2 rounded-full bg-agro-green animate-pulse" />
-              Lançamento Oficial • EAD Exclusivo para o Agronegócio
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}

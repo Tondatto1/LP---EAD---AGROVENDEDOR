@@ -12,13 +12,25 @@ export default function Pricing({ onSubscribe }: PricingProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-agro-blue tracking-tight mt-1">
             Escolha seu Plano e Comece Agora
           </h2>
-          <p className="mt-4 font-sans text-base text-gray-600 leading-relaxed">
-            Capacitação completa desenvolvida por especialistas rurais. Comece sem custo com o nível gratuito ou acelere seus resultados com o plano Elite Premium.
-          </p>
+          
+          {/* Highlighted 7-Day Guarantee Seal */}
+          <div className="mt-8 inline-flex items-center gap-4 bg-agro-green/15 text-agro-green border-2 border-agro-green/30 px-6 py-3.5 rounded-2xl shadow-md hover:scale-102 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 bg-agro-green text-white rounded-xl shadow-inner shrink-0">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div className="text-left">
+              <span className="font-sans font-extrabold text-sm sm:text-base uppercase tracking-wider block leading-none">
+                Garantia incondicional de 7 dias
+              </span>
+              <span className="font-sans text-xs text-agro-green/80 mt-1 block">
+                Risco zero para sua assinatura do plano Elite
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Side-by-Side Pricing Cards */}
@@ -94,7 +106,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                   onClick={() => onSubscribe("free")}
                   className="w-full inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white font-sans font-bold text-sm py-4 px-6 rounded-xl transition-all text-center shadow-md hover:translate-y-[-1px] active:translate-y-[1px] uppercase tracking-wider cursor-pointer"
                 >
-                  <span>ASSINAR AGORA</span>
+                  <span>ACESSAR AGORA</span>
                   <ArrowRight className="h-4.5 w-4.5" />
                 </button>
               </div>
@@ -115,7 +127,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                 <div>
                   <div className="flex justify-between items-start mb-6 mt-2">
                     <h3 className="font-display font-bold text-2xl text-agro-blue tracking-tight">
-                      Assinatura Premium Elite
+                      Assinatura
                     </h3>
                     <span className="px-2.5 py-1 bg-amber-50 text-amber-600 border border-amber-200 text-[10px] font-black rounded-lg uppercase tracking-wider">
                       ★ Elite
@@ -182,18 +194,28 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       Encontros mensais
                     </span>
                   </li>
+                  <li className="flex gap-2.5 items-start">
+                    <div className="p-0.5 rounded-full shrink-0 bg-agro-green/15 text-agro-green">
+                      <Check className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
+                      Certificado de conclusão de todos os treinamentos
+                    </span>
+                  </li>
                 </ul>
               </div>
 
               {/* Plan Action CTA */}
               <div>
-                <button
-                  onClick={() => onSubscribe("premium")}
+                <a
+                  href="https://www.asaas.com/c/3rni9bejcla4dz06"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 bg-agro-green hover:bg-agro-green-dark text-white font-sans font-bold text-sm py-4 px-6 rounded-xl transition-all text-center shadow-lg shadow-agro-green/20 hover:translate-y-[-1px] active:translate-y-[1px] uppercase tracking-wider cursor-pointer"
                 >
                   <span>ASSINAR AGORA</span>
                   <ArrowRight className="h-4.5 w-4.5" />
-                </button>
+                </a>
               </div>
 
             </div>
@@ -201,15 +223,6 @@ export default function Pricing({ onSubscribe }: PricingProps) {
         </div>
 
       </div>
-
-        {/* Security / Quality guarantee badge */}
-        <div className="mt-14 max-w-xl mx-auto flex items-center justify-center gap-3.5 text-center px-4">
-          <ShieldCheck className="h-6 w-6 text-agro-green shrink-0" />
-          <p className="font-sans text-xs text-gray-500 leading-relaxed text-left">
-            <strong>Compra 100% Segura & Garantia de Satisfação:</strong> Oferecemos criptografia de ponta a ponta na transação do plano Premium. Se em até 7 dias você sentir que as trilhas não ajudaram em suas abordagens diárias no campo, devolvemos seu dinheiro integralmente.
-          </p>
-        </div>
-
       </div>
     </section>
   );

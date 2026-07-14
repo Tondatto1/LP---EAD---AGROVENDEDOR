@@ -76,3 +76,78 @@ body {
   align-items: center;
 }
 
+/* LogoLoop CSS */
+.logoloop {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: block;
+}
+
+.logoloop__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.logoloop__list {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--logoloop-gap, 32px);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.logoloop__item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoloop--horizontal .logoloop__track {
+  flex-direction: row;
+}
+
+.logoloop--vertical .logoloop__track {
+  flex-direction: column;
+}
+
+.logoloop--vertical .logoloop__list {
+  flex-direction: column;
+}
+
+/* Fading gradients at the edges */
+.logoloop--fade::before,
+.logoloop--fade::after {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(to right, var(--logoloop-fadeColor, #fafafa) 0%, transparent 100%);
+  width: 150px;
+  height: 100%;
+  top: 0;
+}
+
+.logoloop--fade::before {
+  left: 0;
+}
+
+.logoloop--fade::after {
+  right: 0;
+  transform: rotate(180deg);
+}
+
+/* Scale on hover support */
+.logoloop--scale-hover .logoloop__item {
+  transition: transform 0.3s ease;
+}
+
+.logoloop--scale-hover .logoloop__item:hover {
+  transform: scale(1.03);
+}
+
+

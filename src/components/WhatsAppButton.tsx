@@ -37,7 +37,7 @@ export default function WhatsAppButton() {
     return () => clearTimeout(timer);
   }, []);
 
-  const whatsappUrl = "https://wa.me/5511999999999?text=Ol%C3%A1!%20Estou%20no%20site%20do%20AgroVendas%20Academy%20e%20gostaria%20de%20falar%20com%20o%20suporte.";
+  const whatsappUrl = `https://wa.me/556798190294?text=${encodeURIComponent("Olá! Estou na página da plataforma e tenho uma dúvida.")}`;
 
   return (
     <div

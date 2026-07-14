@@ -91,17 +91,17 @@ export default function Footer() {
             <ul className="space-y-3.5">
               <li className="flex gap-2.5 items-center">
                 <Mail className="h-4 w-4 text-agro-green shrink-0" />
-                <span className="font-sans text-xs text-gray-300">suporte@agrovendasacademy.com</span>
+                <span className="font-sans text-xs text-gray-300">comercialagrovendedor@gmail.com</span>
               </li>
               <li className="flex gap-2.5 items-center">
                 <Phone className="h-4 w-4 text-agro-green shrink-0" />
-                <span className="font-sans text-xs text-gray-300">0800 757 9000 (Seg à Sex, 8h às 18h)</span>
+                <span className="font-sans text-xs text-gray-300">67 9 98190294 (seg à sex, 08:00 às 17:00)</span>
               </li>
               <li className="flex gap-2.5 items-start">
                 <MapPin className="h-4 w-4 text-agro-green shrink-0 mt-0.5" />
                 <span className="font-sans text-xs text-gray-300 leading-relaxed">
-                  Av. das Nações Unidas, 12901 - Brooklin Novo<br />
-                  São Paulo - SP, CEP 04578-000
+                  Avenida Marechal Rondon, 2083 - Campo Grande - MS<br />
+                  CEP 79002-204
                 </span>
               </li>
             </ul>

@@ -111,27 +111,57 @@ export const pricingPlans: PricingPlan[] = [
 export const faqItems: FAQItem[] = [
   {
     id: "faq-1",
-    question: "Os cursos servem para quem vende maquinários pesados?",
-    answer: "Com certeza! Temos trilhas de aprendizado e materiais didáticos desenhados especialmente para lidar com as especificidades do mercado de máquinas e implementos rurais, cobrindo tópicos como cálculo de depreciação, ROI da automação agrícola, negociações com carência e linhas de financiamento como o Moderfrota."
+    question: "Como acesso os cursos?",
+    answer: "Você pode criar seu cadastro gratuitamente e navegar pela plataforma para conhecer todos os treinamentos. Quando decidir iniciar, basta clicar em qualquer curso bloqueado e fazer sua assinatura para liberar o acesso completo à plataforma. Você também pode realizar a assinatura diretamente pela página da Plataforma EAD Agrovendedor."
   },
   {
     id: "faq-2",
-    question: "Como funciona a garantia e o reembolso?",
-    answer: "Nós confiamos plenamente na qualidade do nosso treinamento. Por isso, oferecemos uma garantia incondicional de 7 dias úteis. Caso você se inscreva e sinta que a plataforma não atende ao seu perfil no dia a dia do campo, basta solicitar o reembolso por e-mail e devolveremos 100% do valor pago, sem burocracias."
+    question: "Posso assistir pelo celular?",
+    answer: "Sim. A plataforma funciona em computadores, tablets e smartphones, permitindo que você estude de onde estiver."
   },
   {
     id: "faq-3",
-    question: "As aulas são ao vivo ou gravadas? Qual a flexibilidade?",
-    answer: "A maior parte das nossas trilhas de treinamento é composta por videoaulas gravadas, o que permite que você assista no seu próprio ritmo, nos horários em que estiver livre na estrada ou nos intervalos de visitas. No entanto, o plano Elite do Agro também conta com mentorias mensais ao vivo, que são gravadas para quem não puder comparecer no dia."
+    question: "Os cursos são voltados apenas para o agronegócio?",
+    answer: "Os treinamentos têm como foco o agronegócio, mas grande parte das estratégias comerciais também pode ser aplicada em outros segmentos de vendas."
   },
   {
     id: "faq-4",
-    question: "Posso acessar a plataforma offline ou no celular?",
-    answer: "Sim! Nosso aplicativo web é 100% responsivo para celulares e tablets. No plano anual, os alunos conseguem baixar o material de apoio em PDFs estruturados e checklists práticos para consultar no campo mesmo sem sinal de internet (onde muitas fazendas não possuem cobertura)."
+    question: "Quanto tempo tenho para concluir os cursos?",
+    answer: "Enquanto sua assinatura estiver ativa, você pode assistir aos treinamentos no seu ritmo, quantas vezes quiser."
   },
   {
     id: "faq-5",
-    question: "O que é abordado sobre Operações de Barter?",
-    answer: "Abordamos de maneira prática como estruturar propostas comerciais onde a moeda de troca é o grão ou a fibra (soja, milho, algodão, café). Ensinamos você a calcular com segurança a relação de troca físico/financeiro, demonstrar as vantagens de hedge de mercado para o produtor e quebrar o medo de oscilações cambiais na mesa de negociação."
+    question: "Como funciona o cancelamento da assinatura?",
+    answer: "Você pode cancelar sua assinatura quando desejar."
+  },
+  {
+    id: "faq-6",
+    question: "Preciso pagar para conhecer a plataforma?",
+    answer: "Não. Você pode criar seu cadastro gratuitamente, navegar pela plataforma e acessar as entrevistas que estão liberadas de forma gratuita."
+  },
+  {
+    id: "faq-7",
+    question: "Posso assistir às aulas quantas vezes quiser?",
+    answer: "Sim. Enquanto sua assinatura estiver ativa, você pode acessar os cursos e rever as aulas sempre que desejar."
+  },
+  {
+    id: "faq-8",
+    question: "Novos cursos serão adicionados à plataforma?",
+    answer: "Sim. A plataforma está em constante evolução e novos conteúdos poderão ser disponibilizados para os assinantes ao longo do tempo."
+  },
+  {
+    id: "faq-9",
+    question: "Como funciona a assinatura?",
+    answer: "A assinatura é mensal e garante acesso ilimitado aos cursos exclusivos da plataforma enquanto estiver ativa."
+  },
+  {
+    id: "faq-10",
+    question: "Existe suporte caso eu tenha alguma dúvida?",
+    answer: "Sim. Caso precise de ajuda com acesso ou utilização da plataforma, nossa equipe estará disponível para prestar suporte."
+  },
+  {
+    id: "faq-11",
+    question: "Ainda tenho dúvidas. Como entro em contato?",
+    answer: "Você pode entrar em contato com nossa equipe pelo Whatsapp disponibilizado na página da Plataforma EAD Agrovendedor."
   }
 ];

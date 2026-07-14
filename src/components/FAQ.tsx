@@ -79,10 +79,10 @@ export default function FAQ() {
             Ainda tem alguma dúvida específica? Fale diretamente com nossa equipe de suporte comercial.
           </p>
           <a
-            href="mailto:suporte@agrovendasacademy.com"
+            href="mailto:comercialagrovendedor@gmail.com"
             className="mt-3 inline-flex items-center gap-2 font-sans font-bold text-xs text-agro-blue hover:text-agro-green transition-colors bg-white px-5 py-2.5 rounded-full border border-gray-200/60 shadow-xs"
           >
-            📧 suporte@agrovendasacademy.com
+            📧 comercialagrovendedor@gmail.com
           </a>
         </div>
 
