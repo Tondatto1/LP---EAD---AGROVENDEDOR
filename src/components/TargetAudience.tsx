@@ -35,7 +35,7 @@ export default function TargetAudience() {
   ];
 
   return (
-    <section id="publico" className="bg-gray-50/50 py-20 lg:py-24 relative overflow-hidden">
+    <section id="para-quem-serve" className="bg-gray-50/50 py-20 lg:py-24 relative overflow-hidden">
       {/* Decorative clean background curves */}
       <div className="absolute top-0 inset-x-0 h-16 bg-white rounded-b-[40px] shadow-xs" />
       

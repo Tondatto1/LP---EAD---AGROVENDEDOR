@@ -1,7 +1,18 @@
-import { Star, Quote } from "lucide-react";
-import { testimonials } from "../data";
+import React, { useState } from "react";
+import { Star, ShieldCheck, ZoomIn, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+
+const testimonialImages = [
+  { id: 1, src: "/depoimento ead 01.jpeg", alt: "Depoimento de aluno EAD 1" },
+  { id: 2, src: "/depoimento ead 02.jpeg", alt: "Depoimento de aluno EAD 2" },
+  { id: 3, src: "/depoimento ead 03.jpeg", alt: "Depoimento de aluno EAD 3" },
+  { id: 4, src: "/depoimento ead 04.jpeg", alt: "Depoimento de aluno EAD 4" },
+  { id: 5, src: "/depoimento ead 05.jpeg", alt: "Depoimento de aluno EAD 5" },
+];
 
 export default function Testimonials() {
+  const [activeImage, setActiveImage] = useState<string | null>(null);
+
   return (
     <section id="depoimentos" className="bg-white py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,56 +22,51 @@ export default function Testimonials() {
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-agro-blue tracking-tight">
             Depoimentos de quem vive do campo
           </h2>
-
+          <p className="font-sans text-sm text-gray-500 mt-3">
+            Clique em qualquer imagem para ampliar e ler o depoimento completo
+          </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {testimonials.map((test) => (
+        {/* Testimonials Flex/Grid */}
+        <div className="flex flex-wrap justify-center gap-8">
+          {testimonialImages.map((test) => (
             <div
               key={test.id}
-              className="relative bg-white border border-gray-100 rounded-2xl p-8 shadow-lg shadow-gray-100/50 flex flex-col justify-between hover:border-agro-green/20 hover:shadow-xl transition-all group"
+              onClick={() => setActiveImage(test.src)}
+              className="w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-sm bg-white border border-gray-100 rounded-3xl p-4 shadow-lg shadow-gray-100/50 flex flex-col justify-between hover:border-agro-green/20 hover:shadow-2xl hover:shadow-agro-green/5 transition-all duration-300 group cursor-pointer relative"
+              id={`testimonial-card-${test.id}`}
             >
-              {/* Decorative quote icon */}
-              <div className="absolute top-6 right-8 text-gray-100 group-hover:text-agro-green/10 transition-colors">
-                <Quote className="h-10 w-10 rotate-180" />
+              {/* Image container */}
+              <div className="relative overflow-hidden rounded-2xl bg-[#fafafa] flex items-center justify-center border border-gray-50 aspect-[4/5] sm:aspect-[3/4]">
+                <img
+                  src={test.src}
+                  alt={test.alt}
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                />
+                
+                {/* Hover overlay with zoom icon */}
+                <div className="absolute inset-0 bg-agro-blue/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="bg-white/95 text-agro-blue p-3 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300 flex items-center gap-2 font-sans font-bold text-xs">
+                    <ZoomIn className="h-4.5 w-4.5 text-agro-green animate-pulse" />
+                    <span>Ampliar depoimento</span>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                {/* Rating */}
-                <div className="flex gap-1 mb-6">
-                  {Array.from({ length: test.rating }).map((_, i) => (
-                    <Star key={i} className="h-4.5 w-4.5 fill-yellow-400 text-yellow-400" />
+              {/* Verified badge + Stars */}
+              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between px-1">
+                <div className="flex items-center gap-1.5 text-agro-green font-sans font-semibold text-xs">
+                  <ShieldCheck className="h-4 w-4" />
+                  <span>Depoimento Verificado</span>
+                </div>
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-
-                {/* Text */}
-                <p className="font-sans text-sm text-gray-600 leading-relaxed italic mb-8 relative z-10">
-                  "{test.text}"
-                </p>
               </div>
-
-              {/* Profile Card */}
-              <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
-                <img
-                  src={test.image}
-                  alt={test.name}
-                  className="h-12 w-12 rounded-full object-cover border border-gray-200"
-                  referrerPolicy="no-referrer"
-                />
-                <div>
-                  <h4 className="font-display font-bold text-sm text-agro-blue">
-                    {test.name}
-                  </h4>
-                  <p className="font-sans text-[11px] font-medium text-gray-500">
-                    {test.role}
-                  </p>
-                  <p className="font-sans text-[10px] font-bold text-agro-green">
-                    {test.company}
-                  </p>
-                </div>
-              </div>
-
             </div>
           ))}
         </div>
@@ -79,6 +85,37 @@ export default function Testimonials() {
         </div>
 
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {activeImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+            onClick={() => setActiveImage(null)}
+          >
+            <button
+              onClick={() => setActiveImage(null)}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-colors cursor-pointer"
+              aria-label="Fechar"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              src={activeImage}
+              alt="Depoimento Ampliado"
+              className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

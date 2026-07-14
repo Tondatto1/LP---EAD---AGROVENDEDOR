@@ -1,14 +1,29 @@
 import React from "react";
 import { Sprout, Mail, Phone, MapPin, Shield } from "lucide-react";
 
-export default function Footer() {
+interface FooterProps {
+  currentView?: "landing" | "privacy";
+  setCurrentView?: (view: "landing" | "privacy") => void;
+}
+
+export default function Footer({ currentView = "landing", setCurrentView }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const targetElement = document.querySelector(href);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
+    if (currentView !== "landing" && setCurrentView) {
+      setCurrentView("landing");
+      setTimeout(() => {
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    } else {
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -19,7 +34,17 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="md:col-span-5">
-            <a href="#" className="inline-block mb-4 group">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (setCurrentView) {
+                  setCurrentView("landing");
+                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="inline-block mb-4 group"
+            >
               <div className="bg-white px-4 py-2 rounded-xl transition-transform group-hover:scale-[1.02] inline-block">
                 <img
                   src="/LOGO - LETRA PRETA - TRANS - HOR.png"
@@ -30,7 +55,7 @@ export default function Footer() {
               </div>
             </a>
             <p className="font-sans text-xs text-gray-300 leading-relaxed max-w-sm mb-6">
-              A maior plataforma de capacitação comercial e negociações avançadas exclusiva para o mercado do agronegócio. Treinamentos práticos de RTVs para RTVs.
+              A maior plataforma de capacitação comercial e negociações avançadas exclusiva para o mercado do agronegócio.
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-400 bg-white/5 px-4 py-2 rounded-xl w-fit border border-white/10">
               <Shield className="h-4 w-4 text-agro-green" />
@@ -46,20 +71,11 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="#publico"
-                  onClick={(e) => handleScroll(e, "#publico")}
+                  href="#para-quem-serve"
+                  onClick={(e) => handleScroll(e, "#para-quem-serve")}
                   className="font-sans text-xs text-gray-300 hover:text-agro-green transition-colors"
                 >
-                  Público-Alvo
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#como-funciona"
-                  onClick={(e) => handleScroll(e, "#como-funciona")}
-                  className="font-sans text-xs text-gray-300 hover:text-agro-green transition-colors"
-                >
-                  Como Funciona
+                  Para quem serve
                 </a>
               </li>
               <li>
@@ -73,11 +89,29 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#planos"
-                  onClick={(e) => handleScroll(e, "#planos")}
+                  href="#treinamentos"
+                  onClick={(e) => handleScroll(e, "#treinamentos")}
                   className="font-sans text-xs text-gray-300 hover:text-agro-green transition-colors"
                 >
-                  Valores de Assinaturas
+                  Todos treinamentos
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#entrevistas"
+                  onClick={(e) => handleScroll(e, "#entrevistas")}
+                  className="font-sans text-xs text-gray-300 hover:text-agro-green transition-colors"
+                >
+                  Entrevistas
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#faq"
+                  onClick={(e) => handleScroll(e, "#faq")}
+                  className="font-sans text-xs text-gray-300 hover:text-agro-green transition-colors"
+                >
+                  FAQ
                 </a>
               </li>
             </ul>
@@ -115,10 +149,20 @@ export default function Footer() {
         {/* Legal block */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <p className="font-sans text-[10px] text-gray-400">
-            © {currentYear} AgroVendas Academy S.A. Todos os direitos reservados. CNPJ: 45.981.402/0001-23.
+            @ 2026 AGROVENDEDOR TREINAMENTOS NO AGRONEGOCIO LTDA. Todos os direitos reservados. CNPJ: 59.269.205/0001-10
           </p>
           <div className="flex gap-5 text-[10px] text-gray-400">
-            <a href="#" className="hover:text-agro-green transition-colors">Políticas de Privacidade</a>
+            <button
+              onClick={() => {
+                if (setCurrentView) {
+                  setCurrentView("privacy");
+                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="hover:text-agro-green transition-colors cursor-pointer"
+            >
+              Políticas de Privacidade
+            </button>
             <span>•</span>
             <a href="#" className="hover:text-agro-green transition-colors">Termos de Uso</a>
           </div>

@@ -11,6 +11,7 @@ import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import StudentPortal from "./components/StudentPortal";
+import PrivacyPolicy from "./components/PrivacyPolicy";
 
 interface UserProfile {
   name: string;
@@ -23,6 +24,7 @@ export default function App() {
   const [isInitializing, setIsInitializing] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [checkoutTier, setCheckoutTier] = useState<"free" | "premium">("premium");
+  const [currentView, setCurrentView] = useState<"landing" | "privacy">("landing");
 
   // Load user session on startup
   useEffect(() => {
@@ -96,9 +98,19 @@ export default function App() {
   };
 
   const handleScrollToPlanos = () => {
-    const targetElement = document.getElementById("planos");
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
+    if (currentView !== "landing") {
+      setCurrentView("landing");
+      setTimeout(() => {
+        const targetElement = document.getElementById("planos");
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    } else {
+      const targetElement = document.getElementById("planos");
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -106,34 +118,47 @@ export default function App() {
   return (
     <div className="relative min-h-screen bg-[#fafafa] flex flex-col font-sans select-none antialiased">
       {/* Primary Header Navbar */}
-      <Navbar onSubscribe={handleScrollToPlanos} />
+      <Navbar 
+        onSubscribe={handleScrollToPlanos} 
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+      />
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        {/* Dobra 1: Hero Section */}
-        <Hero onSubscribe={handleScrollToPlanos} />
+        {currentView === "privacy" ? (
+          <PrivacyPolicy onBack={() => setCurrentView("landing")} />
+        ) : (
+          <>
+            {/* Dobra 1: Hero Section */}
+            <Hero onSubscribe={handleScrollToPlanos} />
 
-        {/* Dobra 2: Para quem é esta plataforma? */}
-        <TargetAudience />
+            {/* Dobra 2: Para quem é esta plataforma? */}
+            <TargetAudience />
 
-        {/* Dobra 3: Depoimentos */}
-        <Testimonials />
+            {/* Dobra 3: Depoimentos */}
+            <Testimonials />
 
-        {/* Dobra 4: Como funciona a plataforma (Trilhas de conteúdo) */}
-        <HowItWorks onSubscribe={handleScrollToPlanos} />
+            {/* Dobra 4: Como funciona a plataforma (Trilhas de conteúdo) */}
+            <HowItWorks onSubscribe={handleScrollToPlanos} />
 
-        {/* Dobra 4.2: Sessão de entrevistas exclusivas */}
-        <Interviews />
+            {/* Dobra 4.2: Sessão de entrevistas exclusivas */}
+            <Interviews />
 
-        {/* Dobra 5: Valores de assinaturas */}
-        <Pricing onSubscribe={handleOpenCheckout} />
+            {/* Dobra 5: Valores de assinaturas */}
+            <Pricing onSubscribe={handleOpenCheckout} />
 
-        {/* Dobra 6: FAQ */}
-        <FAQ />
+            {/* Dobra 6: FAQ */}
+            <FAQ />
+          </>
+        )}
       </main>
 
       {/* Footer Section */}
-      <Footer />
+      <Footer 
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+      />
 
       {/* Checkout Modal */}
       <CheckoutModal 

@@ -3,26 +3,38 @@ import { Sprout, Menu, X, ArrowRight } from "lucide-react";
 
 interface NavbarProps {
   onSubscribe: () => void;
+  currentView?: "landing" | "privacy";
+  setCurrentView?: (view: "landing" | "privacy") => void;
 }
 
-export default function Navbar({ onSubscribe }: NavbarProps) {
+export default function Navbar({ onSubscribe, currentView = "landing", setCurrentView }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: "Público-Alvo", href: "#publico" },
-    { name: "Como Funciona", href: "#como-funciona" },
+    { name: "Para quem serve", href: "#para-quem-serve" },
     { name: "Depoimentos", href: "#depoimentos" },
-    { name: "Planos", href: "#planos" },
+    { name: "Todos treinamentos", href: "#treinamentos" },
+    { name: "Entrevistas", href: "#entrevistas" },
     { name: "FAQ", href: "#faq" }
   ];
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const targetElement = document.querySelector(href);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
+    if (currentView !== "landing" && setCurrentView) {
+      setCurrentView("landing");
+      setTimeout(() => {
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    } else {
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
     }
+    setIsOpen(false);
   };
 
   return (
@@ -31,7 +43,17 @@ export default function Navbar({ onSubscribe }: NavbarProps) {
         <div className="flex justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="#" className="flex items-center gap-2 group">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (setCurrentView) {
+                  setCurrentView("landing");
+                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="flex items-center gap-2 group"
+            >
               <img
                 src="/LOGO - LETRA PRETA - TRANS - HOR.png"
                 alt="AgroVendas Academy Logo"

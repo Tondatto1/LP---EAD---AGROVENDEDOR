@@ -70,7 +70,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Algumas aulas do treinamento campeão em vendas agro
+                      Acesso a todas as entrevistas com profissionais do agro
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -78,7 +78,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Acesso a algumas entrevistas
+                      Navegue e conheça o catálogo de cursos
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -86,7 +86,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Suporte
+                      Suporte de acesso à plataforma
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -94,7 +94,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Grupo da comunidade
+                      Cadastro gratuito na plataforma
                     </span>
                   </li>
                 </ul>
@@ -102,13 +102,15 @@ export default function Pricing({ onSubscribe }: PricingProps) {
 
               {/* Plan Action CTA */}
               <div>
-                <button
-                  onClick={() => onSubscribe("free")}
+                <a
+                  href="https://agrovendedor.curseduca.pro/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white font-sans font-bold text-sm py-4 px-6 rounded-xl transition-all text-center shadow-md hover:translate-y-[-1px] active:translate-y-[1px] uppercase tracking-wider cursor-pointer"
                 >
                   <span>ACESSAR AGORA</span>
                   <ArrowRight className="h-4.5 w-4.5" />
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -167,7 +169,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Acesso a todos os treinamentos
+                      Acesso a todas as entrevistas com profissionais do agro
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -175,7 +177,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Acesso a todas as entrevistas
+                      Acesso a todos os cursos da plataforma
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -183,7 +185,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Suporte prioritário
+                      Suporte de acesso à plataforma prioritário
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -191,7 +193,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Encontros mensais
+                      Novos cursos e conteúdos adicionados continuamente
                     </span>
                   </li>
                   <li className="flex gap-2.5 items-start">
@@ -199,7 +201,7 @@ export default function Pricing({ onSubscribe }: PricingProps) {
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <span className="font-sans text-xs sm:text-sm text-gray-600 leading-tight">
-                      Certificado de conclusão de todos os treinamentos
+                      Acesso ilimitado enquanto a assinatura estiver ativa
                     </span>
                   </li>
                 </ul>

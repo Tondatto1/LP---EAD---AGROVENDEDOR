@@ -35,7 +35,7 @@ export default function HowItWorks({ onSubscribe }: HowItWorksProps) {
   ];
 
   return (
-    <section id="como-funciona" className="bg-gray-50 py-20 lg:py-24 relative overflow-hidden select-none">
+    <section id="treinamentos" className="bg-gray-50 py-20 lg:py-24 relative overflow-hidden select-none">
       {/* Decorative clean background bottom curves */}
       <div className="absolute bottom-0 inset-x-0 h-16 bg-white rounded-t-[40px] shadow-xs" />
 
