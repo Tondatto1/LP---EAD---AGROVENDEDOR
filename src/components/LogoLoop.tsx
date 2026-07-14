@@ -256,22 +256,24 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           const roundedHeight = Math.ceil(sequenceHeight);
           setSeqHeight(prev => (Math.abs(prev - roundedHeight) > 1 ? roundedHeight : prev));
           const viewport = containerRef.current?.clientHeight ?? parentHeight ?? sequenceHeight;
-          const copiesNeeded = Math.ceil(viewport / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
-          const targetCopies = Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded);
+          const rawCopies = Math.ceil(viewport / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
+          const copiesNeeded = isFinite(rawCopies) && !isNaN(rawCopies) ? rawCopies : ANIMATION_CONFIG.MIN_COPIES;
+          const targetCopies = Math.min(8, Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
           setCopyCount(prev => (prev !== targetCopies ? targetCopies : prev));
         }
       } else if (sequenceWidth > 0) {
         const roundedWidth = Math.ceil(sequenceWidth);
         setSeqWidth(prev => (Math.abs(prev - roundedWidth) > 1 ? roundedWidth : prev));
-        const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
-        const targetCopies = Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded);
+        const rawCopies = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
+        const copiesNeeded = isFinite(rawCopies) && !isNaN(rawCopies) ? rawCopies : ANIMATION_CONFIG.MIN_COPIES;
+        const targetCopies = Math.min(8, Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
         setCopyCount(prev => (prev !== targetCopies ? targetCopies : prev));
       }
     }, [isVertical]);
 
-    useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight, isVertical]);
+    useResizeObserver(updateDimensions, [containerRef, seqRef], [logos.length, gap, logoHeight, isVertical]);
 
-    useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isVertical]);
+    useImageLoader(seqRef, updateDimensions, [logos.length, gap, logoHeight, isVertical]);
 
     useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
 

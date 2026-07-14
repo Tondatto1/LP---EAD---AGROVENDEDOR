@@ -1,22 +1,22 @@
-import React from "react";
+import React, { useMemo } from "react";
 import LogoLoop from "./LogoLoop";
 
 export default function Interviews() {
-  const row1Images = [
+  const row1Images = useMemo(() => [
     "/Entrevista 01.png",
     "/Entrevista 02.png",
     "/Entrevista 03.png",
     "/Entrevista 04.png",
-  ];
+  ], []);
 
-  const row2Images = [
+  const row2Images = useMemo(() => [
     "/Entrevista 05.png",
     "/Entrevista 06.png",
     "/Entrevista 07.png",
     "/Entrevista 08.png",
-  ];
+  ], []);
 
-  const row1Logos = row1Images.map((imgSrc, idx) => ({
+  const row1Logos = useMemo(() => row1Images.map((imgSrc, idx) => ({
     node: (
       <div className="perpetual-border-card w-[240px] sm:w-[280px] md:w-[320px] aspect-square rounded-[24px] shadow-md hover:shadow-xl transition-all duration-300">
         <div className="perpetual-border-card-inner overflow-hidden rounded-[21px] flex items-center justify-center bg-white">
@@ -29,9 +29,9 @@ export default function Interviews() {
         </div>
       </div>
     )
-  }));
+  })), [row1Images]);
 
-  const row2Logos = row2Images.map((imgSrc, idx) => ({
+  const row2Logos = useMemo(() => row2Images.map((imgSrc, idx) => ({
     node: (
       <div className="perpetual-border-card w-[240px] sm:w-[280px] md:w-[320px] aspect-square rounded-[24px] shadow-md hover:shadow-xl transition-all duration-300">
         <div className="perpetual-border-card-inner overflow-hidden rounded-[21px] flex items-center justify-center bg-white">
@@ -44,7 +44,7 @@ export default function Interviews() {
         </div>
       </div>
     )
-  }));
+  })), [row2Images]);
 
   return (
     <section id="entrevistas" className="bg-[#fafafa] py-20 lg:py-24 relative overflow-hidden">
