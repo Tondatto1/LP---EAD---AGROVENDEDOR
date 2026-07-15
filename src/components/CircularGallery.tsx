@@ -1,5 +1,5 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import './CircularGallery.css';
@@ -39,42 +39,58 @@ function deriveFontFamilyFromUrl(url: string): string {
 }
 
 async function loadFontFromStylesheet(url: string): Promise<string> {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`Failed to fetch font stylesheet (${response.status})`);
-  const cssText = await response.text();
-  const faceBlocks = cssText.match(/@font-face\s*{[^}]*}/g) || [];
-  let family: string | null = null;
-  const fontFaces: FontFace[] = [];
-  for (const block of faceBlocks) {
-    const familyMatch = block.match(/font-family:\s*['"]?([^;'"]+)['"]?/);
-    const urlMatch = block.match(/url\(\s*['"]?([^'")]+)['"]?\s*\)/);
-    if (!familyMatch || !urlMatch) continue;
-    family = familyMatch[1].trim();
-    const descriptors: FontFaceDescriptors = {};
-    const weightMatch = block.match(/font-weight:\s*([^;]+);/);
-    const styleMatch = block.match(/font-style:\s*([^;]+);/);
-    const rangeMatch = block.match(/unicode-range:\s*([^;]+);/);
-    if (weightMatch) descriptors.weight = weightMatch[1].trim();
-    if (styleMatch) descriptors.style = styleMatch[1].trim();
-    if (rangeMatch) descriptors.unicodeRange = rangeMatch[1].trim();
-    fontFaces.push(new FontFace(family, `url(${urlMatch[1]})`, descriptors));
+  if (typeof FontFace === 'undefined' || !document.fonts) {
+    return 'Figtree';
   }
-  if (!family) throw new Error('No @font-face rule found in the stylesheet');
-  await Promise.allSettled(
-    fontFaces.map(async face => {
-      await face.load();
-      document.fonts.add(face);
-    })
-  );
-  return family;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to fetch font stylesheet (${response.status})`);
+    const cssText = await response.text();
+    const faceBlocks = cssText.match(/@font-face\s*{[^}]*}/g) || [];
+    let family: string | null = null;
+    const fontFaces: FontFace[] = [];
+    for (const block of faceBlocks) {
+      const familyMatch = block.match(/font-family:\s*['"]?([^;'"]+)['"]?/);
+      const urlMatch = block.match(/url\(\s*['"]?([^'")]+)['"]?\s*\)/);
+      if (!familyMatch || !urlMatch) continue;
+      family = familyMatch[1].trim();
+      const descriptors: FontFaceDescriptors = {};
+      const weightMatch = block.match(/font-weight:\s*([^;]+);/);
+      const styleMatch = block.match(/font-style:\s*([^;]+);/);
+      const rangeMatch = block.match(/unicode-range:\s*([^;]+);/);
+      if (weightMatch) descriptors.weight = weightMatch[1].trim();
+      if (styleMatch) descriptors.style = styleMatch[1].trim();
+      if (rangeMatch) descriptors.unicodeRange = rangeMatch[1].trim();
+      fontFaces.push(new FontFace(family, `url(${urlMatch[1]})`, descriptors));
+    }
+    if (!family) throw new Error('No @font-face rule found in the stylesheet');
+    await Promise.allSettled(
+      fontFaces.map(async face => {
+        await face.load();
+        document.fonts.add(face);
+      })
+    );
+    return family;
+  } catch (err) {
+    console.warn('CircularGallery: Failed to load font stylesheet. Falling back to default.', err);
+    return 'Figtree';
+  }
 }
 
 async function loadFontFromFile(url: string): Promise<string> {
   const family = deriveFontFamilyFromUrl(url);
-  const fontFace = new FontFace(family, `url(${url})`);
-  await fontFace.load();
-  document.fonts.add(fontFace);
-  return family;
+  if (typeof FontFace === 'undefined' || !document.fonts) {
+    return family;
+  }
+  try {
+    const fontFace = new FontFace(family, `url(${url})`);
+    await fontFace.load();
+    document.fonts.add(fontFace);
+    return family;
+  } catch (err) {
+    console.warn('CircularGallery: Failed to load font file. Falling back to default.', err);
+    return family;
+  }
 }
 
 async function loadCustomFont(fontUrl: string): Promise<string> {
@@ -650,6 +666,15 @@ class App {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = 'touches' in e ? e.touches[0].clientX : e.clientX;
+
+    // Dynamically attach move and up event listeners to window to avoid blocking page-wide scroll on touch/mouse actions
+    if ('touches' in e) {
+      window.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
+      window.addEventListener('touchend', this.boundOnTouchUp, { passive: true });
+    } else {
+      window.addEventListener('mousemove', this.boundOnTouchMove);
+      window.addEventListener('mouseup', this.boundOnTouchUp);
+    }
   }
 
   onTouchMove(e: MouseEvent | TouchEvent) {
@@ -662,6 +687,12 @@ class App {
   onTouchUp() {
     this.isDown = false;
     this.onCheck();
+
+    // Dynamically detach move and up events from window
+    window.removeEventListener('touchmove', this.boundOnTouchMove);
+    window.removeEventListener('touchend', this.boundOnTouchUp);
+    window.removeEventListener('mousemove', this.boundOnTouchMove);
+    window.removeEventListener('mouseup', this.boundOnTouchUp);
   }
 
   onWheel(e: Event) {
@@ -737,14 +768,14 @@ class App {
     this.boundOnKeyDown = this.onKeyDown.bind(this);
 
     window.addEventListener('resize', this.boundOnResize);
-    window.addEventListener('mousewheel', this.boundOnWheel);
-    window.addEventListener('wheel', this.boundOnWheel);
-    window.addEventListener('mousedown', this.boundOnTouchDown);
-    window.addEventListener('mousemove', this.boundOnTouchMove);
-    window.addEventListener('mouseup', this.boundOnTouchUp);
-    window.addEventListener('touchstart', this.boundOnTouchDown);
-    window.addEventListener('touchmove', this.boundOnTouchMove);
-    window.addEventListener('touchend', this.boundOnTouchUp);
+
+    // Only intercept wheel events inside the gallery itself, not window-wide
+    this.container?.addEventListener('mousewheel', this.boundOnWheel, { passive: true });
+    this.container?.addEventListener('wheel', this.boundOnWheel, { passive: true });
+
+    // Drag/touch events start ONLY on the container
+    this.container?.addEventListener('mousedown', this.boundOnTouchDown);
+    this.container?.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
 
     this.container?.addEventListener('keydown', this.boundOnKeyDown);
   }
@@ -752,14 +783,21 @@ class App {
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.boundOnResize);
-    window.removeEventListener('mousewheel', this.boundOnWheel);
-    window.removeEventListener('wheel', this.boundOnWheel);
-    window.removeEventListener('mousedown', this.boundOnTouchDown);
-    window.removeEventListener('mousemove', this.boundOnTouchMove);
-    window.removeEventListener('mouseup', this.boundOnTouchUp);
-    window.removeEventListener('touchstart', this.boundOnTouchDown);
+
+    if (this.container) {
+      this.container.removeEventListener('mousewheel', this.boundOnWheel);
+      this.container.removeEventListener('wheel', this.boundOnWheel);
+      this.container.removeEventListener('mousedown', this.boundOnTouchDown);
+      this.container.removeEventListener('touchstart', this.boundOnTouchDown);
+      this.container.removeEventListener('keydown', this.boundOnKeyDown);
+    }
+
+    // Safety cleanup of window listeners
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
+    window.removeEventListener('mousemove', this.boundOnTouchMove);
+    window.removeEventListener('mouseup', this.boundOnTouchUp);
+
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas as HTMLCanvasElement);
     }
@@ -792,27 +830,73 @@ export default function CircularGallery({
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<App | null>(null);
+  const [webglSupported, setWebglSupported] = useState(true);
 
   useEffect(() => {
     if (!containerRef.current) return;
+    
+    // Check WebGL context support
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        setWebglSupported(false);
+        return;
+      }
+    } catch (e) {
+      setWebglSupported(false);
+      return;
+    }
+
     let app: App | undefined;
     let isMounted = true;
+
     resolveFont(font, fontUrl).then(resolvedFont => {
       if (!isMounted || !containerRef.current) return;
-      app = new App(containerRef.current, {
-        items,
-        bend,
-        textColor,
-        borderRadius,
-        font: resolvedFont,
-        scrollSpeed,
-        scrollEase
-      });
-      appRef.current = app;
+      try {
+        app = new App(containerRef.current, {
+          items,
+          bend,
+          textColor,
+          borderRadius,
+          font: resolvedFont,
+          scrollSpeed,
+          scrollEase
+        });
+        appRef.current = app;
+      } catch (err) {
+        console.warn("CircularGallery WebGL initialization failed, falling back to CSS:", err);
+        setWebglSupported(false);
+      }
+    }).catch(err => {
+      console.warn("CircularGallery font resolution failed, loading with system fonts:", err);
+      if (!isMounted || !containerRef.current) return;
+      try {
+        app = new App(containerRef.current, {
+          items,
+          bend,
+          textColor,
+          borderRadius,
+          font: font,
+          scrollSpeed,
+          scrollEase
+        });
+        appRef.current = app;
+      } catch (initErr) {
+        console.warn("CircularGallery WebGL fallback initialization failed:", initErr);
+        setWebglSupported(false);
+      }
     });
+
     return () => {
       isMounted = false;
-      if (app) app.destroy();
+      if (app) {
+        try {
+          app.destroy();
+        } catch (e) {
+          // ignore destroy issues
+        }
+      }
       appRef.current = null;
     };
   }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
@@ -832,6 +916,33 @@ export default function CircularGallery({
       appRef.current.onCheckDebounce();
     }
   };
+
+  if (!webglSupported) {
+    return (
+      <div className="w-full flex gap-4 overflow-x-auto pb-4 pt-2 px-1 snap-x snap-mandatory scroll-smooth scrollbar-none justify-start md:justify-center">
+        {items?.map((item, idx) => (
+          <div 
+            key={idx} 
+            className="flex-shrink-0 w-64 bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100/80 snap-center transition-all duration-300 hover:shadow-lg flex flex-col"
+          >
+            <div className="aspect-[3/4] relative overflow-hidden bg-gray-50 flex items-center justify-center">
+              <img 
+                src={item.image} 
+                alt={item.text} 
+                className="w-full h-full object-cover select-none pointer-events-none"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="p-4 bg-white border-t border-gray-50 flex-grow flex items-center justify-center">
+              <p className="font-sans font-semibold text-agro-blue text-xs text-center uppercase tracking-wide">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-full group/gallery">

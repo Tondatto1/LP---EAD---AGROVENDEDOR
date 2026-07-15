@@ -79,7 +79,7 @@ export default function Hero({ onSubscribe }: HeroProps) {
               className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-gray-100 w-full"
             >
               <div className="flex flex-col">
-                <span className="font-display font-bold text-2xl text-agro-blue">+2 mil</span>
+                <span className="font-display font-bold text-2xl text-agro-blue">+20 mil</span>
                 <span className="font-sans text-xs text-gray-500">Alunos no campo</span>
               </div>
               <div className="flex flex-col">
