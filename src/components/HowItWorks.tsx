@@ -9,27 +9,27 @@ interface HowItWorksProps {
 export default function HowItWorks({ onSubscribe }: HowItWorksProps) {
   const galleryItems = [
     {
-      image: "/bora_vendee_agro.jpeg",
-      text: "Bora Vendee Agro"
+      image: "/Campeão em vendas no Agro.jpeg",
+      text: "Campeão em vendas no Agro"
     },
     {
-      image: "/campeao_em_vendas_agro.jpeg",
-      text: "Campeão em Vendas Agro"
+      image: "/Carteira de clientes.jpeg",
+      text: "Carteira de clientes"
     },
     {
-      image: "/chega_de_crise.jpeg",
+      image: "/Chega de crise.jpeg",
       text: "Chega de crise"
     },
     {
-      image: "/da_experiencia_a_excelencia.jpeg",
+      image: "/Da experiência a excelência.jpeg",
       text: "Da experiência a excelência"
     },
     {
-      image: "/fechamento_em_vendas.jpeg",
-      text: "Fechamento em vendas"
+      image: "/Negociação de vendas.jpeg",
+      text: "Negociações de vendas"
     },
     {
-      image: "/trincheira_de_vendas.jpeg",
+      image: "/Trincheira de vendas.jpeg",
       text: "Trincheira de vendas"
     }
   ];

@@ -114,7 +114,7 @@ export default function Hero({ onSubscribe }: HeroProps) {
               className="relative w-full max-w-3xl lg:max-w-none lg:w-[125%] lg:translate-x-16"
             >
               <img
-                src="/Design sem nome (92).png"
+                src="/mockup pc e cell.png"
                 alt="Plataforma AgroVendedor no Computador e Celular"
                 className="w-full h-auto object-contain drop-shadow-2xl select-none"
                 referrerPolicy="no-referrer"
